@@ -1,8 +1,10 @@
 const express = require('express');
+const { v4: uuidv4 } = require('uuid');
 
 const app = express();
-
 app.use(express.json());
+
+const projects = [];
 
 // Get https://localhost:3000/projects?title=Node&owner=Gabriel
 
@@ -11,23 +13,13 @@ app.use(express.json());
 app.get('/', (req, res) => res.send('Hello World!'));
 
 app.get('/projects', function (request, response) {
-	const query = request.query;
-	console.log(query);
-
-	const { title, owner } = request.query;
-	console.log(title, owner);
-
-	return response.json(['projeto 1', 'projeto 2']);
+	return response.json(projects);
 });
 
 app.post('/projects', function (request, response) {
-	const body = request.body;
-	console.log(body);
-
-	const { title, owner } = request.body;
-	console.log(title, owner);
-
-	return response.json(['projeto 1', 'projeto 2', 'projeto 3']);
+	const project = { id: uuidv4(), ...request.body };
+	projects.push(project);
+	return response.status(201).json(project);
 });
 
 app.put('/projects/:id/:name', function (request, response) {
