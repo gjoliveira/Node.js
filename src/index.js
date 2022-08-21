@@ -22,7 +22,13 @@ app.post('/projects', function (request, response) {
 	return response.json(['projeto 1', 'projeto 2', 'projeto 3']);
 });
 
-app.put('/projects/:id', function (request, response) {
+app.put('/projects/:id/:name', function (request, response) {
+	const params = request.params;
+	console.log(params);
+
+	const { id, name } = request.params;
+	console.log(id, name);
+
 	return response.json(['projeto 1', 'projeto 2', 'projeto 3 atualizado...']);
 });
 
