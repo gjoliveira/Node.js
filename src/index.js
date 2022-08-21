@@ -2,10 +2,10 @@ const express = require('express');
 
 const app = express();
 
-app.get('/', function (request, response) {
-	return response.json({
-		message: 'App is running...',
-	});
+app.get('/', (req, res) => res.send('Hello World!'));
+
+app.get('/projects', function (request, response) {
+	return response.json(['projeto 1', 'projeto 2']);
 });
 
 app.listen(3000, () => {
