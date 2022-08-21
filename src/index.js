@@ -2,9 +2,19 @@ const express = require('express');
 
 const app = express();
 
+// Get https://localhost:3000/projects?title=Node&owner=Gabriel
+
+// Get https://localhost:3000/projects?page=10&limit=5
+
 app.get('/', (req, res) => res.send('Hello World!'));
 
 app.get('/projects', function (request, response) {
+	const query = request.query;
+	console.log(query);
+
+	const { title, owner } = request.query;
+	console.log(title, owner);
+
 	return response.json(['projeto 1', 'projeto 2']);
 });
 
