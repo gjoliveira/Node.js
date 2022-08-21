@@ -63,7 +63,15 @@ app.patch('/projects/:id/', function (request, response) {
 });
 
 app.delete('/projects/:id', function (request, response) {
-	return response.json(['projeto 1', 'projeto 2', 'projeto 3 deletado...']);
+	const { id } = request.params;
+	//const id = request.params.id;
+	const projectIndex = projects.findIndex((project) => project.id === id);
+
+	if (projectIndex < 0) {
+		return response.status(404).json({ error: 'Project not found' });
+	}
+	projects.splice(projectIndex, 1);
+	return response.status(204).send();
 });
 
 app.listen(3000, () => {
