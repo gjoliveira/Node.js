@@ -6,9 +6,9 @@ app.use(express.json());
 
 const projects = [];
 
-// Get https://localhost:3000/projects?title=Node&owner=Gabriel
+//Get https://localhost:3000/projects?title=Node&owner=Gabriel
 
-// Get https://localhost:3000/projects?page=10&limit=5
+//Get https://localhost:3000/projects?page=10&limit=5
 
 app.get('/', (req, res) => res.send('Hello World!'));
 
@@ -22,14 +22,28 @@ app.post('/projects', function (request, response) {
 	return response.status(201).json(project);
 });
 
-app.put('/projects/:id/:name', function (request, response) {
-	const params = request.params;
-	console.log(params);
+app.put('/projects/:id', function (request, response) {
+	const { id } = request.params;
+	//const id = request.params.id;
+	const { name, owner } = request.body;
+	const projectIndex = projects.findIndex((project) => project.id === id);
 
-	const { id, name } = request.params;
-	console.log(id, name);
+	if (projectIndex < 0) {
+		return response.status(404).json({ error: 'Project not found' });
+	}
 
-	return response.json(['projeto 1', 'projeto 2', 'projeto 3 atualizado...']);
+	if (!name || !owner) {
+		return response.status(400).json({ error: 'Missing parameters' });
+	}
+
+	const project = {
+		id,
+		name,
+		owner,
+	};
+
+	projects[projectIndex] = project;
+	return response.json(project);
 });
 
 app.patch('/projects/:id/', function (request, response) {
