@@ -1,3 +1,4 @@
+const { request } = require('express');
 const express = require('express');
 const { v4: uuidv4 } = require('uuid');
 
@@ -5,6 +6,18 @@ const app = express();
 app.use(express.json());
 
 const projects = [];
+
+function logRequests(req, res, next) {
+	console.log(request);
+	const { method, url } = req;
+
+	const logLabel = `[${method.toUpperCase()}] ${url}`;
+
+	console.log(logLabel);
+	return next();
+}
+
+//app.use(logRequests);
 
 //Get https://localhost:3000/projects?title=Node&owner=Gabriel
 
@@ -16,7 +29,7 @@ app.get('/projects', function (request, response) {
 	return response.json(projects);
 });
 
-app.post('/projects', function (request, response) {
+app.post('/projects', logRequests, function (request, response) {
 	const project = { id: uuidv4(), ...request.body };
 	projects.push(project);
 	return response.status(201).json(project);
